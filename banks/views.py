@@ -21,7 +21,7 @@ def bank_list(request):
 def bank_branches(request, bank_id):
     bank = get_object_or_404(Bank, id=bank_id)
     branches = bank.branches.all()
-    data = [{"id": branch.id, "name": branch.name} for branch in branches]
+    data = [{"id": branch.id, "name": branch.name, "branch_code": branch.branch_code} for branch in branches]
     return JsonResponse(data, safe=False)
 
 
