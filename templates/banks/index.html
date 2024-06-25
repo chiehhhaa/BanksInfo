@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+	<script src="{% static 'scripts/bank.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'styles/index.css' %}">
+	<title>台灣銀行代碼查詢</title>
+
+</head>
+
+<body>
+	<div x-data="bankData()" x-init="init">
+		<p class="powered-by">powered by <a class="link" href="https://github.com/chiehhhaa">chiehhhaa</a></p>
+		<h1>台灣銀行代碼查詢</h1>
+		<div class="container">
+			<div class="input-container" :class="{ 'selected': selectedBank }">
+				<label for="bank_name">銀行名稱：</label>
+				<input type="text" id="bank_name" name="bank_name" x-model="search" :placeholder="searchPlaceholder"
+					@input="filterBanks" @focus="clearAndShowDropdown" @blur="hideDropdown">
+				<p class="search-instructions">可使用下拉選單或直接輸入關鍵字查詢</p>
+				<div class="autocomplete-items" x-show="showDropdown && filteredBanks.length">
+					<template x-for="bank in filteredBanks" :key="bank.id">
+						<div class="autocomplete-item" @mousedown.prevent="selectBank(bank)">
+							<span x-text="`${bank.bank_code} ${bank.name}`"></span>
+						</div>
+					</template>
+				</div>
+			</div>
+
+			<div class="input-container" :class="{ 'selected': selectedBranch }">
+				<label for="branch_name">分行名稱：</label>
+				<input type="text" id="branch_name" name="branch_name" x-model="branchSearch"
+					:placeholder="branchSearchPlaceholder" @input="filterBranches" @focus="clearAndShowBranchDropdown"
+					@blur="hideBranchDropdown" :disabled="!selectedBank">
+				<div class="autocomplete-items" x-show="showBranchDropdown && filteredBranches.length">
+					<template x-for="branch in filteredBranches" :key="branch.id">
+						<div class="autocomplete-item" @mousedown.prevent="selectBranch(branch)">
+							<span x-text="branch.name"></span>
+						</div>
+					</template>
+				</div>
+			</div>
+		</div>
+		<div x-show="selectedBank && selectedBranch">
+			<h2>
+				<span x-text="selectedBankNameWithCodeAndBranch()"></span>
+			</h2>
+			<div class="branch-code-container">
+				<p><strong>分行代碼：</strong> <span x-text="branchDetail.branch_code"></span></p>
+				<button class="copy-button" x-show="selectedBank && selectedBranch"
+					@click="copyBranchCode(branchDetail.branch_code, $event)">複製分行代碼</button>
+			</div>
+			<p><strong>地址：</strong> <span x-text="branchDetail.address"></span></p>
+			<p><strong>電話：</strong> <span x-text="branchDetail.phone"></span></p>
+			<button class="reset-button" @click="resetSelections">重新查詢</button>
+		</div>
+	</div>
+
+</body>
+
+</html>
