@@ -26,7 +26,6 @@
 					</template>
 				</div>
 			</div>
-
 			<div class="input-container" id="branch-input"  :class="{ 'selected': selectedBranch }">
 				<label for="branch_name">分行名稱：</label>
 				<input type="text" id="branch_name" name="branch_name" x-model="branchSearch"
@@ -42,6 +41,9 @@
 				</div>
 			</div>
 		</div>
+		{% if selected_bank and selected_branch %}
+		{% include 'banks/detail.html' %}
+		{% endif %}
 		<div x-show="selectedBank && selectedBranch">
 			<h2>
 				<span x-text="selectedBankNameWithCodeAndBranch()"></span>
@@ -64,7 +66,6 @@
 						<p>資料來源：</p><a href="https://data.gov.tw/dataset/6041"><p>政府資料開放平台</p></a>
 					</div>
 			</div>
-			
 			<a href="{% url 'banks:index' %}">
 				<button class="reset-button" @click="resetSelections">重新查詢</button></a>
 			<button class="copy-url-button" @click="copyBranchUrl">複製分行網址</button>

@@ -19,21 +19,6 @@ function bankData() {
             const response = await fetch('/api/banks/');
             this.banks = await response.json();
             this.filteredBanks = this.banks;
-            const selectedBank = JSON.parse(localStorage.getItem('selectedBank'));
-            const selectedBranch = JSON.parse(localStorage.getItem('selectedBranch'));
-            
-            if (selectedBank) {
-                this.selectedBank = selectedBank.id;
-                this.searchPlaceholder = `${selectedBank.bank_code} ${selectedBank.name}`;
-                this.updateBranches();
-            }
-            
-            if (selectedBranch) {
-                this.selectedBranch = selectedBranch.id;
-                this.branchSearchPlaceholder = selectedBranch.name;
-                const response = await fetch(`/api/branches/${selectedBranch.id}`);
-                this.branchDetail = await response.json();
-            }
         },
 
         filterBanks() {
@@ -69,8 +54,9 @@ function bankData() {
             this.selectedBranch = null;
             this.updateBranches();
             this.showDropdown = false;
-            localStorage.setItem('selectedBank', JSON.stringify(bank));
+            this.search = `${bank.bank_code} ${bank.name}`;
             history.pushState(null, '', `/${bank.bank_code}/`);
+            this.removeDetail();
         },
 
         async selectBranch(branch) {
@@ -85,7 +71,14 @@ function bankData() {
                 const url = `${this.baseUrl}/${bank.bank_code}/${branch.branch_code}/${bank.name}-${branch.name}.html`;
                 history.pushState(null, '', url);
             }
-            localStorage.setItem('selectedBranch', JSON.stringify(branch));
+            this.removeDetail();
+        },
+
+        removeDetail() {
+            const detailContainer = document.querySelector('.detail-container');
+            if (detailContainer) {
+                detailContainer.innerHTML = '';
+            }
         },
 
         hideDropdown() {
@@ -162,9 +155,6 @@ function bankData() {
             this.branchSearch = '';
             this.searchPlaceholder = '請輸入關鍵字或銀行代碼...';
             this.branchSearchPlaceholder = '請選擇分行名稱...';
-
-            localStorage.removeItem('selectedBank');
-            localStorage.removeItem('selectedBranch');
         },
 
         generateBranchUrl() {
