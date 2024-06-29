@@ -20,10 +20,14 @@
             <span>{{ selected_branch.phone }}</span>
         </p>
             <div class="data-source">
-                <p>資料來源：</p><a href="https://data.gov.tw/dataset/6041"><p>政府資料開放平台</p></a>
+                <p>資料來源：</p>
+                <a href="https://data.gov.tw/dataset/6041">
+                    <p>政府資料開放平台</p>
+                </a>
             </div>
     </div>
     <a href="{% url 'banks:index' %}">
-        <button class="reset-button" @click="resetSelections">重新查詢</button></a>
+        <button class="reset-button" @click="resetSelections">重新查詢</button>
+    </a>
     <button class="copy-url-button" @click="copyBranchUrl">複製分行網址</button>
 </div>
