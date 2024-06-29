@@ -1,0 +1,33 @@
+<div class="detail-container">
+    <h2>
+        <span>{{ bank_name }} ({{ bank_code }}) {{ branch_name }}</span>
+    </h2>
+    <div class="branch-code-container">
+        <p>
+            <strong>分行代碼：</strong> 
+            <span>{{ branch_code }}</span>
+        </p>
+        <button class="copy-button"
+            @click="copyBranchCode(branchDetail.branch_code, $event)">複製分行代碼</button>
+    </div>
+    <p>
+        <strong>地址：</strong> 
+        <span>{{ selected_branch.address }}</span>
+    </p>
+    <div class="data-link">
+        <p>
+            <strong>電話：</strong>
+            <span>{{ selected_branch.phone }}</span>
+        </p>
+            <div class="data-source">
+                <p>資料來源：</p>
+                <a href="https://data.gov.tw/dataset/6041">
+                    <p>政府資料開放平台</p>
+                </a>
+            </div>
+    </div>
+    <a href="{% url 'banks:index' %}">
+        <button class="reset-button" @click="resetSelections">重新查詢</button>
+    </a>
+    <button class="copy-url-button" @click="copyBranchUrl">複製分行網址</button>
+</div>

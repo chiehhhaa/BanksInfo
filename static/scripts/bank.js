@@ -15,10 +15,27 @@ function bankData() {
         branchDetail: {},
         baseUrl: window.location.origin,
 
-        async init() {
+        async init(bankCode = '', branchCode = '') {
             const response = await fetch('/api/banks/');
             this.banks = await response.json();
             this.filteredBanks = this.banks;
+
+            if (bankCode) {
+                const selectedBank = this.banks.find(bank => bank.bank_code === bankCode);
+                if (selectedBank) {
+                    this.selectBank(selectedBank);
+                }
+            }
+
+            if (branchCode && this.selectedBank) {
+                const responseBranches = await fetch(`/api/banks/${this.selectedBank}/branches/`);
+                this.branches = await responseBranches.json();
+                this.filteredBranches = this.branches;
+                const selectedBranch = this.branches.find(branch => branch.branch_code === branchCode);
+                if (selectedBranch) {
+                    this.selectBranch(selectedBranch);
+                }
+            }
         },
 
         filterBanks() {
@@ -54,7 +71,9 @@ function bankData() {
             this.selectedBranch = null;
             this.updateBranches();
             this.showDropdown = false;
+            this.search = `${bank.bank_code} ${bank.name}`;
             history.pushState(null, '', `/${bank.bank_code}/`);
+            this.removeDetail();
         },
 
         async selectBranch(branch) {
@@ -68,6 +87,14 @@ function bankData() {
             if (bank) {
                 const url = `${this.baseUrl}/${bank.bank_code}/${branch.branch_code}/${bank.name}-${branch.name}.html`;
                 history.pushState(null, '', url);
+            }
+            this.removeDetail();
+        },
+
+        removeDetail() {
+            const detailContainer = document.querySelector('.detail-container');
+            if (detailContainer) {
+                detailContainer.innerHTML = '';
             }
         },
 

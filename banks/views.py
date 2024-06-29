@@ -43,5 +43,7 @@ def bank_branch_detail(request, bank_code, branch_code, bank_name, branch_name):
         "selected_branch": branch,
         "bank_name": bank_name,
         "branch_name": branch_name,
+        "bank_code": bank_code,
+        "branch_code": branch_code,
     }
     return render(request, "banks/index.html", context)
