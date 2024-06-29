@@ -23,6 +23,10 @@ $ poetry install
 ```
 $ make server
 ```
+### CSV存入資料庫
+```
+$ python manage.py import_csv data/bankInfo.csv
+```
 
 ## 使用技術：
 - 前端：HTML, CSS, Alpine.js
