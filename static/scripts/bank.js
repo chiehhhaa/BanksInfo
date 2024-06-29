@@ -43,6 +43,9 @@ function bankData() {
             this.filteredBanks = this.banks.filter(bank => {
                 return bank.name.toLowerCase().includes(keyword) || bank.bank_code.includes(keyword);
             });
+            if (this.filteredBanks.length === 0) {
+                this.filteredBanks = [{ name: '查無此名稱', bank_code: '', id: null }];
+            }
         },
 
         async updateBranches() {
@@ -61,9 +64,13 @@ function bankData() {
             this.filteredBranches = this.branches.filter(branch => {
                 return branch.name.toLowerCase().includes(keyword);
             });
+            if (this.filteredBranches.length === 0) {
+                this.filteredBranches = [{ name: '查無此名稱', branch_code: '', id: null }];
+            }
         },
 
         async selectBank(bank) {
+            if (!bank.id) return;
             this.searchPlaceholder = `${bank.bank_code} ${bank.name}`;
             this.search = '';
             this.selectedBank = bank.id;
@@ -77,6 +84,7 @@ function bankData() {
         },
 
         async selectBranch(branch) {
+            if (!branch.id) return;
             this.branchSearchPlaceholder = branch.name;
             this.branchSearch = '';
             this.selectedBranch = branch.id;
@@ -113,11 +121,13 @@ function bankData() {
         clearAndShowDropdown() {
             this.search = '';
             this.showDropdown = true;
+            this.filteredBanks = this.banks; 
         },
 
         clearAndShowBranchDropdown() {
             this.branchSearch = '';
             this.showBranchDropdown = true;
+            this.filteredBranches = this.branches;
         },
 
         selectedBankNameWithCodeAndBranch() {
@@ -155,7 +165,7 @@ function bankData() {
                             button.textContent = '已複製';
                             setTimeout(() => {
                                 button.textContent = '複製分行網址';
-                            },  500);
+                            }, 500);
                         }
                     })
                     .catch(err => {
@@ -180,7 +190,7 @@ function bankData() {
             if (bank && branch) {
                 return `${this.baseUrl}/${bank.bank_code}/${branch.branch_code}/${bank.name}-${branch.name}.html`;
             }
-            return null; 
+            return null;
         }
     };
 }
