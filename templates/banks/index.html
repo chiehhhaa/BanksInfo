@@ -8,7 +8,13 @@
 {% endblock %}
 
 {% block content %}
-	<div x-data="bankData()" x-init="init('{{ bank_code|escapejs }}', '{{ branch_code|escapejs }}', '{{ bank_name|escapejs }}', '{{ branch_name|escapejs }}')" data-bank-code="{{ bank_code|escapejs }}" data-branch-code="{{ branch_code|escapejs }}" data-bank-name="{{ bank_name|escapejs }}" data-branch-name="{{ branch_name|escapejs }}">
+	<div x-data="bankData()" 
+			 x-init="init('{{ bank.bank_code|escapejs }}', '{{ branch.branch_code|escapejs }}', 
+			 '{{ bank.name|escapejs }}', '{{ branch.name|escapejs }}')" 
+			 data-bank-code="{{ bank.bank_code|escapejs }}" 
+			 data-branch-code="{{ branch.branch_code|escapejs }}" 
+			 data-bank-name="{{ bank.name|escapejs }}" 
+			 data-branch-name="{{ branch.name|escapejs }}">
 			<p class="powered-by">powered by 
 				<a class="link" href="https://github.com/chiehhhaa">chiehhhaa</a>
 			</p>

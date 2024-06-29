@@ -1,23 +1,23 @@
 <div class="detail-container">
     <h2>
-        <span>{{ bank_name }} ({{ bank_code }}) {{ branch_name }}</span>
+        <span>{{ bank.name }} ({{ bank.bank_code }}) {{ branch.name }}</span>
     </h2>
     <div class="branch-code-container">
         <p>
             <strong>分行代碼：</strong> 
-            <span>{{ branch_code }}</span>
+            <span>{{ branch.branch_code }}</span>
         </p>
         <button class="copy-button"
             @click="copyBranchCode(branchDetail.branch_code, $event)">複製分行代碼</button>
     </div>
     <p>
         <strong>地址：</strong> 
-        <span>{{ selected_branch.address }}</span>
+        <span>{{ branch.address }}</span>
     </p>
     <div class="data-link">
         <p>
             <strong>電話：</strong>
-            <span>{{ selected_branch.phone }}</span>
+            <span>{{ branch.phone }}</span>
         </p>
             <div class="data-source">
                 <p>資料來源：</p>

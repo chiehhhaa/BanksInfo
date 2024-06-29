@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Bank, Branch
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 
 
 def index(request):
@@ -36,14 +36,14 @@ def branch_detail(request, branch_id):
 
 
 def bank_branch_detail(request, bank_code, branch_code, bank_name, branch_name):
-    bank = get_object_or_404(Bank, bank_code=bank_code)
-    branch = get_object_or_404(Branch, branch_code=branch_code, bank=bank)
+    try:
+        bank = get_object_or_404(Bank, bank_code=bank_code)
+        branch = get_object_or_404(Branch, branch_code=branch_code, bank=bank)
+    except Http404:
+        return redirect("banks:index")
+    
     context = {
-        "selected_bank": bank,
-        "selected_branch": branch,
-        "bank_name": bank_name,
-        "branch_name": branch_name,
-        "bank_code": bank_code,
-        "branch_code": branch_code,
+        "bank": bank,
+        "branch": branch,
     }
     return render(request, "banks/index.html", context)
