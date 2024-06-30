@@ -23,6 +23,10 @@ $ poetry install
 ```
 $ make server
 ```
+### 環境變數設定
+```
+$ cp .env.sample .env
+```
 ### CSV存入資料庫
 ```
 $ python manage.py import_csv data/bankInfo.csv
